@@ -4,3 +4,21 @@
   text-align: center;
 
 }
+
+body {
+  background-color: #4a6e92; /* Light gray */
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.custom-navbar {
+  background-color: #f36e6e; /* Example custom color */
+}
+
+.custom-brand {
+  font-weight: bold;
+  font-family: 'Lucida Handwriting', cursive;
+}
