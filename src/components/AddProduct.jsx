@@ -26,15 +26,21 @@ const AddProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.group('AddProduct Submission');
+        console.log('Form Data:', formData);
 
         try {
             const response = await axios.post('https://fakestoreapi.com/products', formData);
+            console.log('API Response:', response.data);
             setProduct(response.data);
             setSubmitted(true);
             setError(null);
         } catch (err) {
+            console.error('Error adding product:', err.message);
             setError(`Failed to add product: ${err.message}`);
             setSubmitted(false);
+        } finally {
+            console.groupEnd();
         }
     };
 

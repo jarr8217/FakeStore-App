@@ -22,3 +22,15 @@ body {
   font-weight: bold;
   font-family: 'Lucida Handwriting', cursive;
 }
+
+.product-image {
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
+}
+
+.banner-image {
+    object-fit: cover;
+    height: 420px !important;
+    width: 100%;
+}

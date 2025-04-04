@@ -32,11 +32,12 @@ const NavBar = () => {
           >
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/products">Products</Nav.Link>
+            <Nav.Link href='/about'>About</Nav.Link>
              <NavDropdown title="Dropdown" id="navbar">
               <NavDropdown.Item href="/AddProduct">Add Product</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">Update Product</NavDropdown.Item>
+              <NavDropdown.Item href="/UpdateProduct">Update Product</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">Delete Product</NavDropdown.Item>
+              <NavDropdown.Item href="/DeleteProduct">Delete Product</NavDropdown.Item>
             </NavDropdown> 
           </Nav>
           <Form className="d-flex" onSubmit={handleSearch}>

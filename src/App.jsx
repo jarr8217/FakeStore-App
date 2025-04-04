@@ -6,6 +6,8 @@ import ProductDetails from './components/ProductDetails'
 import ProductList from './components/ProductList'
 import NavBar from './components/NavBar'
 import AddProduct from './components/AddProduct'
+import About from './components/About'
+import DeleteProduct from './components/DeleteProduct'
 
 
 
@@ -21,6 +23,8 @@ function App() {
       <Route path='/products' element={ <ProductList /> }></Route>
       <Route path='/products/:id' element={ <ProductDetails /> }></Route>
       <Route path='/AddProduct' element={ <AddProduct /> }></Route>
+      <Route path='/about' element={ <About /> }></Route>
+      <Route path='/DeleteProduct' element={ <DeleteProduct /> }></Route>
     </Routes>
     </>
   )
