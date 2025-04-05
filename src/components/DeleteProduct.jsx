@@ -1,40 +1,75 @@
-import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const DeleteProduct = () => {
-    const [productId, setProductId] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  
 
-    const handleDelete = (e) => {
-        e.preventDefault();
-        console.log(`Deleting product with ID: ${productId}`);
-        // Add logic to delete the product (e.g., API call)
-        setProductId('');
-    };
+  const handleDelete = async () => {
 
-    return (
-        <Container className="mt-5">
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h2 className="text-center mb-4">Delete Product</h2>
-                    <Form onSubmit={handleDelete}>
-                        <Form.Group controlId="productId">
-                            <Form.Label>Product ID</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter product ID"
-                                value={productId}
-                                onChange={(e) => setProductId(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                        <Button variant="danger" type="submit" className="mt-3 w-100">
-                            Delete Product
-                        </Button>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
-    );
-};
+    if (!productId) {
+      console.error('Invalid productId:', id);
+      alert('Error: Invalid product ID');
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/${productId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Delete failed with status:', response.status, 'Response:', errorData);
+        alert(`Error deleting product: ${errorData.message || 'Unknown error'}`);
+        return;
+      }
+
+      console.log('Delete response:', response);
+      setShowModal(false);
+      console.log('Navigating to /products');
+      navigate('/products'); // Adjust to your route
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Error deleting product');
+    }
+  };
+
+  return (
+    <>
+      <Button variant="danger" onClick={() => {
+        console.log('Opening delete confirmation modal');
+        setShowModal(true);
+      }}>
+        Delete
+      </Button>
+
+      <Modal show={showModal} onHide={() => {
+        console.log('Closing delete confirmation modal');
+        setShowModal(false);
+      }} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this product? This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => {
+            console.log('Cancel button clicked');
+            setShowModal(false);
+          }}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
 
 export default DeleteProduct;

@@ -5,13 +5,12 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Link } from 'react-router-dom';
+import Img from 'react-bootstrap/Image';
 
-{/* Product Detail Component, arrow function */}
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Set initial loading state to true
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -21,6 +20,7 @@ const ProductDetails = () => {
         setLoading(false);
       })
       .catch((error) => {
+        console.error('Error fetching product:', error.message);
         setError('Failed to load product details');
         setLoading(false);
       });
@@ -30,42 +30,40 @@ const ProductDetails = () => {
   if (error) return <p>{error}</p>;
   if (!product) return <p>Product not found</p>;
 
-
   return (
     <Container className='mt-5'>
+      <Card>
+      <Card.Body>
       <Row>
         <Col md={6}>
-         <image src={product.image} alt={product.title} className='img-fluid' />
+          <Img src={product.image} alt={product.title} className='img-fluid mb-5' />
         </Col>
         <Col md={6}>
-        <Card>
-          <Card.body>
-            <Card.Title>{product.title}</Card.Title>
-            <Card.Text>
-              <strong>Rating:</strong> {product.rating.rate} ({product.rating.count} reviews)
-            </Card.Text>
-            <Card.Text>
-              <strong>Product ID:</strong> {product.id}
-            </Card.Text>
-            <Card.Text>
-              <strong>Brand:</strong> {product.brand}
-            </Card.Text>
-            <Card.Text>
-              <strong>Category:</strong> {product.category}
-            </Card.Text>
-            <Card.Text>
-              <strong>Price:</strong> ${product.price}
-            </Card.Text>
-            <Card.Text>
-              <strong>Description:</strong> {product.description}
-            </Card.Text>
-          </Card.body>
-          
-          </Card>
+              <Card.Title>{product.title}</Card.Title>
+              <Card.Text>
+                <strong>Rating:</strong> {product.rating?.rate || 'N/A'} ({product.rating?.count || 0} reviews)
+              </Card.Text>
+              <Card.Text>
+                <strong>Product ID:</strong> {product.id}
+              </Card.Text>
+              <Card.Text>
+                <strong>Brand:</strong> {product.brand || 'Unknown'}
+              </Card.Text>
+              <Card.Text>
+                <strong>Category:</strong> {product.category || 'Uncategorized'}
+              </Card.Text>
+              <Card.Text>
+                <strong>Price:</strong> ${product.price || 'N/A'}
+              </Card.Text>
+              <Card.Text>
+                <strong>Description:</strong> {product.description || 'No description available'}
+              </Card.Text>
         </Col>
       </Row>
+      </Card.Body>
+    </Card>
     </Container>
-  )
-}
+  );
+};
 
 export default ProductDetails;

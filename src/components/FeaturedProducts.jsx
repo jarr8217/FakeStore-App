@@ -9,7 +9,6 @@ const FeaturedProducts = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log('FeaturedProducts component mounted');
     const fetchProducts = async () => {
       try {
         console.log('Fetching featured products...');

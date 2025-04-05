@@ -27,7 +27,7 @@ const ProductList = () => {
         const filteredProducts = allProducts.filter((product) =>
           product.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
-        console.log(`Filtered products for query "${searchQuery}":`, filteredProducts);
+        console.log(`Search query: "${searchQuery}", Filtered products:`, filteredProducts);
         setProducts(filteredProducts);
         setLoading(false);
       })
@@ -52,15 +52,17 @@ const ProductList = () => {
   }
 
   return (
-    <Container className='mt-5'>
+    <Container className='m-auto p-5 gap-2'>
       <Row>
         {products.map((product) => (
           <Col key={product.id} sm={12} md={6} lg={4}>
-            <Card style={{ width: '18rem', marginBottom: '1rem' }}>
+            <Card className='d-flex justify-content-center align-items-center' tyle={{ width: '18rem', marginBottom: '1rem' }}>
               <Card.Img
                 variant="top"
                 src={product.image}
                 alt={`Image of ${product.title}`}
+                className='img-fluid'
+                style={{ width: '200px', height: '150px', objectFit: 'contain' }}
               />
               <Card.Body>
                 <Card.Title>{product.title}</Card.Title>

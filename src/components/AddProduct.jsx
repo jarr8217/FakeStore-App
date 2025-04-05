@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Modal from 'react-bootstrap/Modal';
 
 const AddProduct = () => {
     const [product, setProduct] = useState();
@@ -18,6 +19,12 @@ const AddProduct = () => {
         category: '',
         image: '',
     });
+    const [showModal, setShowModal] = useState(false);
+
+    const handleCloseModal = () => {
+        console.log('Closing modal');
+        setShowModal(false);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,6 +42,7 @@ const AddProduct = () => {
             setProduct(response.data);
             setSubmitted(true);
             setError(null);
+            setShowModal(true); // Show modal on success
         } catch (err) {
             console.error('Error adding product:', err.message);
             setError(`Failed to add product: ${err.message}`);
@@ -100,6 +108,20 @@ const AddProduct = () => {
                     </Alert>
                 )}
             </Container>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Product Added</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Product added successfully! ID: {product?.id}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };
