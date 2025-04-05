@@ -22,7 +22,7 @@ const EditProduct = () => {
 
   useEffect(() => {
 
-    if (id) {
+    if (!id) {
       console.error("Invalid product ID. Cannot fetch product.");
       setError("Invalid product ID. Please check the URL and try again.");
       setLoading(false);
