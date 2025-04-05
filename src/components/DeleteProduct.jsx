@@ -1,66 +1,39 @@
-import { Modal, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
+import axios from "axios";
 
-const DeleteProduct = () => {
-  const [showModal, setShowModal] = useState(false);
+const DeleteProduct = ({ productId }) => {
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  
 
-  const handleDelete = async () => {
-
-    if (!productId) {
-      console.error('Invalid productId:', id);
-      alert('Error: Invalid product ID');
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://fakestoreapi.com/products/${productId}`, {
-        method: 'DELETE',
+  const handleDelete = () => {
+    axios
+      .delete(`https://fakestoreapi.com/products/${productId}`)
+      .then(() => {
+        setShow(false);
+        navigate("/products");
+      })
+      .catch((err) => {
+        console.error("Error deleting product:", err);
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Delete failed with status:', response.status, 'Response:', errorData);
-        alert(`Error deleting product: ${errorData.message || 'Unknown error'}`);
-        return;
-      }
-
-      console.log('Delete response:', response);
-      setShowModal(false);
-      console.log('Navigating to /products');
-      navigate('/products'); // Adjust to your route
-    } catch (error) {
-      console.error('Delete failed:', error);
-      alert('Error deleting product');
-    }
   };
 
   return (
     <>
-      <Button variant="danger" onClick={() => {
-        console.log('Opening delete confirmation modal');
-        setShowModal(true);
-      }}>
-        Delete
+      <Button variant="outline-danger" className="mt-3 w-100" onClick={() => setShow(true)}>
+        Delete Product
       </Button>
 
-      <Modal show={showModal} onHide={() => {
-        console.log('Closing delete confirmation modal');
-        setShowModal(false);
-      }} centered>
-        <Modal.Header closeButton>
+      <Modal show={show} onHide={() => setShow(false)} centered>
+        <Modal.Header closeButton className="bg-dark text-light border-danger">
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete this product? This action cannot be undone.
+        <Modal.Body className="bg-dark text-light">
+          Are you sure you want to delete this product? This action is irreversible.
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => {
-            console.log('Cancel button clicked');
-            setShowModal(false);
-          }}>
+        <Modal.Footer className="bg-dark border-danger">
+          <Button variant="secondary" onClick={() => setShow(false)}>
             Cancel
           </Button>
           <Button variant="danger" onClick={handleDelete}>
@@ -70,6 +43,6 @@ const DeleteProduct = () => {
       </Modal>
     </>
   );
-}
+};
 
 export default DeleteProduct;

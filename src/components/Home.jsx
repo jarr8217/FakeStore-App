@@ -12,26 +12,25 @@ const Home = () => {
         <>
         <div className="container mt-5">
             <div className="text-center">
-                <h1 className="display-4">Welcome to FakeStore</h1>
-                <p className="lead">Your one-stop shop for fake products with real style.</p>
+                <h1 className="display-4 text-danger">Welcome to FakeStore</h1>
+                <p className="lead text-light">Your one-stop shop for fake products with real style.</p>
                 <img
                 src={bannerImage} // Use the imported image
                 alt="FakeStore Banner"
-                className="img-fluid rounded shadow-sm my-4 banner-image"
+                className="img-fluid rounded shadow-sm my-4 border border-danger"
                 />
             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <Link to="/products" className="btn btn-primary btn-lg" onClick={() => console.log('Shop Now button clicked')}>
+        <Link to="/products" className="btn btn-danger btn-lg">
           Shop Now
         </Link>
-        <Link to="/about" className="btn btn-outline-secondary btn-lg" onClick={() => console.log('Learn More button clicked')}>
+        <Link to="/about" className="btn btn-outline-danger btn-lg">
           Learn More
         </Link>
       </div>
     </div>
 
     <section className="mt-5">
-      <h2 className="mb-4">Featured Products</h2>
-      {/* Render a FeaturedProducts component here */}
+      <h2 className="mb-4 text-danger">Featured Products</h2>
       <FeaturedProducts />
     </section>
   </div>

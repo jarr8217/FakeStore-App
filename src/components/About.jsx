@@ -6,9 +6,9 @@ const About = () => {
         <Container className="about mt-5">
             <Row className="justify-content-center">
                 <Col md={8}>
-                    <Card>
+                    <Card className="bg-dark text-light border-danger shadow">
                         <Card.Body>
-                            <Card.Title as="h1" className="text-center">Guabancex</Card.Title>
+                            <Card.Title as="h1" className="text-danger text-center">Guabancex</Card.Title>
                             <Card.Text>
                                 Welcome to Guabancex, your one-stop shop for all your shopping needs! 
                                 We offer a wide variety of products at unbeatable prices. Our mission 

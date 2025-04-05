@@ -38,6 +38,8 @@ const ProductList = () => {
       });
   }, [searchQuery]);
 
+  
+
   if (loading) {
     console.log('Loading products...');
     return <p>Loading Products...</p>;
@@ -52,20 +54,19 @@ const ProductList = () => {
   }
 
   return (
-    <Container className='m-auto p-5 gap-2'>
+    <Container className="mt-5">
       <Row>
         {products.map((product) => (
           <Col key={product.id} sm={12} md={6} lg={4}>
-            <Card className='d-flex justify-content-center align-items-center' tyle={{ width: '18rem', marginBottom: '1rem' }}>
+            <Card className="bg-dark text-light border-danger shadow mb-4">
               <Card.Img
                 variant="top"
                 src={product.image}
                 alt={`Image of ${product.title}`}
-                className='img-fluid'
-                style={{ width: '200px', height: '150px', objectFit: 'contain' }}
+                className="img-fluid border border-danger rounded"
               />
               <Card.Body>
-                <Card.Title>{product.title}</Card.Title>
+                <Card.Title className="text-danger">{product.title}</Card.Title>
                 <Card.Text>
                   <Reactstars
                     count={5}
@@ -77,18 +78,20 @@ const ProductList = () => {
                   />
                   <strong>Rating:</strong> {product.rating.rate} ({product.rating.count} reviews)
                 </Card.Text>
-                <Card.Text>Price: ${product.price}</Card.Text>
+                <Card.Text>
+                  <strong>Price:</strong> ${product.price}
+                </Card.Text>
                 <Button
-                  variant="primary"
+                  variant="danger"
                   as={Link}
                   to={`/products/${product.id}`}
-                  onClick={() => console.log(`Product Details clicked for Product ID: ${product.id}`)}
+                  className="w-100 mb-2"
                 >
                   Product Details
                 </Button>
                 <Button
-                  variant="warning"
-                  style={{ marginLeft: '0.5rem' }}
+                  variant="outline-danger"
+                  className="w-100"
                   onClick={() => console.log(`Add to Cart clicked for Product ID: ${product.id}`)}
                 >
                   Add to Cart

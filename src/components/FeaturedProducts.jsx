@@ -39,22 +39,27 @@ const FeaturedProducts = () => {
 
   return (
     <div className="row">
-      {products.map(product => (
+      {products.map((product) => (
         <div key={product.id} className="col-md-4 mb-4">
-          <Card className="h-100">
-            <Card.Img variant="top" src={product.image} alt={product.title} />
+          <Card className="bg-dark text-light border-danger shadow h-100">
+            <Card.Img
+              variant="top"
+              src={product.image}
+              alt={product.title}
+              className="border border-danger rounded"
+            />
             <Card.Body>
-              <Card.Title>{product.title}</Card.Title>
+              <Card.Title className="text-danger">{product.title}</Card.Title>
               <Card.Text>
                 <strong>Price:</strong> ${product.price}
                 <br />
                 <strong>Rating:</strong> {product.rating.rate} ({product.rating.count} reviews)
               </Card.Text>
               <Button
-                variant="primary"
+                variant="danger"
                 as={Link}
                 to={`/products/${product.id}`}
-                onClick={() => console.log(`View Details clicked for Product ID: ${product.id}`)}
+                className="w-100"
               >
                 View Details
               </Button>
