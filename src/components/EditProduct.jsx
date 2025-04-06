@@ -11,7 +11,7 @@ const EditProduct = () => {
   const [product, setProduct] = useState({
     id: id ? Number(id) : 0, // Ensure ID is a number
     title: '',
-    price: 0,
+    price: '',
     description: '',
     image: '',
     category: '',
