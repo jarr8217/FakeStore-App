@@ -26,7 +26,7 @@ To set up and run the project locally, follow these steps:
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/jarr8217/FakeStore-App.git
-   cd fakestoreapp
+   cd fakestore-app
 
 2. Install dependencies
    npm install/ npm i
