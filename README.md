@@ -1,12 +1,38 @@
-# React + Vite
+# Fake Store App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a Fake Store application built using React, JavaScript, CSS, and HTML. The app provides a mock online store experience, allowing users to browse products, view details, and manage their shopping cart. It demonstrates the following concepts:
 
-Currently, two official plugins are available:
+- **Component Composition**: Modular and reusable React components.
+- **Event Handling**: Managing user interactions like adding items to the cart and removing items.
+- **API Data Fetching**: Fetching product data dynamically from an external API.
+- **State Management**: Using React's `useState` and `useEffect` hooks to manage application state.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- User can browse products and view detailed information about each product.
+- Dynamically fetches product data from a mock API.
+- Allows users to add and remove items from their shopping cart.
+- Displays the total price of items in the cart.
+- Provides a responsive and user-friendly interface.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project helped reinforce best practices in React development and CSS styling.
+
+Click link to see live app [FakeStoreApp](https://fake-store.netlify.app)
+
+## Installation and Running
+
+To set up and run the project locally, follow these steps:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/jarr8217/FakeStore-App.git
+   cd fakestoreapp
+
+2. Install dependencies
+   npm install/ npm i
+
+3. Run the project 
+   npm run dev
+
+4. Access the app
+   ctrl + click on http://localhost:5173

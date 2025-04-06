@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, Container, Row, Col, Image } from 'react-bootstrap';
-import { getProduct } from './api';
+import { Card, Container, Row, Col, Image, Button, Modal } from 'react-bootstrap';
+import { getProduct, deleteProduct } from './api';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getProduct(id)
@@ -20,6 +21,17 @@ const ProductDetails = () => {
         setLoading(false);
       });
   }, [id]);
+
+  const handleDelete = () => {
+    deleteProduct(id)
+      .then(() => {
+        setShowModal(false);
+        setProduct(null); // Clear product after deletion
+      })
+      .catch(() => {
+        setError('Failed to delete product');
+      });
+  };
 
   if (loading) return <p>Loading Product...</p>;
   if (error) return <p>{error}</p>;
@@ -55,7 +67,36 @@ const ProductDetails = () => {
               <Card.Text>
                 <strong>Description:</strong> {product.description || 'No description available'}
               </Card.Text>
+              <Button
+                variant="danger"
+                className="w-100 mb-2"
+              >
+                Add to cart 
+              </Button>
+              <Button
+                variant="outline-danger"
+                className="w-100"
+                onClick={() => setShowModal(true)}
+              >
+                Delete Product
+              </Button>
             </Card.Body>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+              <Modal.Header closeButton className="bg-dark text-light border-danger">
+                <Modal.Title>Confirm Deletion</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="bg-dark text-light">
+                Are you sure you want to delete this product? This action is irreversible.
+              </Modal.Body>
+              <Modal.Footer className="bg-dark border-danger">
+                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                  Cancel
+                </Button>
+                <Button variant="danger" onClick={handleDelete}>
+                  Delete
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </Card>
         </Col>
       </Row>
