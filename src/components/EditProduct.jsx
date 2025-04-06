@@ -23,10 +23,11 @@ const EditProduct = () => {
 
   // Fetch product details on component mount
   useEffect(() => {
+
     if (!id) {
-      console.warn('Invalid product ID:', id); // Warn about invalid ID
-      setError('Invalid product ID. Redirecting to home page...');
-      setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
+      console.error("Invalid product ID. Cannot fetch product.");
+      setError("Invalid product ID. Please check the URL and try again.");
+      setLoading(false);
       return;
     }
 
@@ -75,7 +76,7 @@ const EditProduct = () => {
         image: product.image,
         category: product.category,
       };
-      const { data } = await axios.put(`https://fakestoreapi.com/products/${id}`, updatedProduct);
+      const { data } = await axios.put(`https://fakestoreapi.com/products/1`, updatedProduct);
       console.info('Product updated successfully:', data); // Success log
       setMessage('Product updated successfully!');
       setTimeout(() => navigate('/products'), 2000); // Redirect after 2 seconds
@@ -89,7 +90,7 @@ const EditProduct = () => {
   const handleDelete = async () => {
     console.warn('Attempting to delete product with ID:', id); // Warn log for deletion
     try {
-      const { data } = await axios.delete(`https://fakestoreapi.com/products/${id}`);
+      const { data } = await axios.delete(`https://fakestoreapi.com/products/1`);
       console.info('Product deleted successfully:', data); // Success log
       setMessage('Product deleted successfully!');
       setTimeout(() => navigate('/products'), 2000); // Redirect after 2 seconds
