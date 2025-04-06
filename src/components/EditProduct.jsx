@@ -136,7 +136,7 @@ const EditProduct = () => {
           <Form.Control
             type="number"
             name="price"
-            value={product.price || 0}
+            value={product.price || ''}
             onChange={handleChange}
             required
           />
