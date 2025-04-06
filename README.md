@@ -17,7 +17,7 @@ This is a Fake Store application built using React, JavaScript, CSS, and HTML. T
 
 This project helped reinforce best practices in React development and CSS styling.
 
-Click link to see live app [FakeStoreApp](https://fake-store.netlify.app)
+Click link to see live app [FakeStoreApp](https://stellar-biscuit-01c807.netlify.app/)
 
 ## Installation and Running
 
