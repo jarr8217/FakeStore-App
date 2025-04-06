@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Modal } from "react-bootstrap";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Modal } from 'react-bootstrap';
+import axios from 'axios';
+import { deleteProduct } from './api';
 
 const DeleteProduct = ({ productId }) => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const handleDelete = () => {
-    axios
-      .delete(`https://fakestoreapi.com/products/${productId}`)
-      .then(() => {
-        setShow(false);
-        navigate("/products");
-      })
-      .catch((err) => {
-        console.error("Error deleting product:", err);
-      });
+  const handleDelete = async () => {
+    try {
+      await deleteProduct(productId);
+      setShow(false);
+      navigate('/products');
+    } catch (err) {
+      console.error('Error deleting product:', err.message);
+    }
   };
 
   return (

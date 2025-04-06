@@ -1,26 +1,21 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Img from 'react-bootstrap/Image';
+import { Card, Container, Row, Col, Image } from 'react-bootstrap';
+import { getProduct } from './api';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true); // Set initial loading state to true
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://fakestoreapi.com/products/${id}`)
+    getProduct(id)
       .then((response) => {
         setProduct(response.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching product:', error.message);
         setError('Failed to load product details');
         setLoading(false);
       });
@@ -34,10 +29,11 @@ const ProductDetails = () => {
     <Container className="mt-5">
       <Row>
         <Col md={6}>
-          <Img
+          <Image
             src={product.image}
             alt={product.title}
-            className="img-fluid border border-danger rounded"
+            fluid
+            className="border border-danger rounded"
           />
         </Col>
         <Col md={6}>

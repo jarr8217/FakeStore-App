@@ -1,21 +1,20 @@
 :root {
-  margin: 0 auto;
-  padding: 3rem;
-  text-align: center;
-
+  --primary-bg: #000;         /* Black background */
+  --primary-text: #f8f9fa;     /* Light text */
+  --accent-color: #dc3545;     /* Bootstrap danger red */
 }
 
 body {
-  background-color: #4a6e92; /* Light gray */
-  font-family: 'Arial', sans-serif;
-  color: #333;
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
   margin: 0;
   padding: 0;
+  font-family: 'Arial', sans-serif;
   text-align: center;
 }
 
 .custom-navbar {
-  background-color: #f36e6e; /* Example custom color */
+  background-color: var(--accent-color);
 }
 
 .custom-brand {
@@ -24,13 +23,13 @@ body {
 }
 
 .product-image {
-    object-fit: cover;
-    height: 200px;
-    width: 100%;
+  object-fit: cover;
+  height: 200px;
+  width: 100%;
 }
 
 .banner-image {
-    object-fit: cover;
-    height: 420px !important;
-    width: 100%;
+  object-fit: cover;
+  height: 420px !important;
+  width: 100%;
 }

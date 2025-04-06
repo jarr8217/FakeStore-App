@@ -1,214 +1,191 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios
-import { Form, Button, Alert, Spinner, Card, Modal } from "react-bootstrap";
-
-const API_URL = "https://fakestoreapi.com/products"; // Base API URL
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Alert } from 'react-bootstrap';
+import axios from 'axios';
 
 const EditProduct = () => {
-  const { id } = useParams(true);
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  // State for product details
   const [product, setProduct] = useState({
-    title: "",
-    price: "",
-    description: "",
-    category: "",
-    image: "",
+    id: id ? Number(id) : 0, // Ensure ID is a number
+    title: '',
+    price: 0,
+    description: '',
+    image: '',
+    category: '',
   });
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // State for messages and errors
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  // Fetch product details on component mount
   useEffect(() => {
-
-    if (id) {
-      console.error("Invalid product ID. Cannot fetch product.");
-      setError("Invalid product ID. Please check the URL and try again.");
-      setLoading(false);
+    if (!id) {
+      console.warn('Invalid product ID:', id); // Warn about invalid ID
+      setError('Invalid product ID. Redirecting to home page...');
+      setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
       return;
     }
 
     const fetchProduct = async () => {
-      console.log(`Fetching product with ID: ${id}`);
       try {
-        const res = await axios.get(`${API_URL}/${id}`); // Fetch product using axios
-        console.log("Product fetched successfully:", res.data);
-        setProduct(res.data);
+        console.info('Fetching product details for ID:', id); // Info log for fetch
+        const { data } = await axios.get(`https://fakestoreapi.com/products/${id}`);
+        setProduct({
+          id: data.id,
+          title: data.title || '',
+          price: data.price || 0,
+          description: data.description || '',
+          image: data.image || '',
+          category: data.category || '',
+        });
+        console.info('Product details fetched successfully'); // Success log
       } catch (err) {
-        console.error("Error fetching product:", err);
-        setError("Failed to load product. Please try again.");
-      } finally {
-        setLoading(false);
-        console.log("Loading state set to false");
+        console.error('Error fetching product details:', err.message); // Error log
+        setError('Failed to load product. Redirecting to home page...');
+        setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
       }
     };
 
     fetchProduct();
-  }, [id]);
+  }, [id, navigate]);
 
+  // Handle form field changes
   const handleChange = (e) => {
-    console.log(`Updating field ${e.target.name} with value: ${e.target.value}`);
-    setProduct({ ...product, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    console.debug(`Field "${name}" updated with value:`, value); // Debug log for field updates
+    setProduct((prev) => ({
+      ...prev,
+      [name]: name === 'price' ? (isNaN(parseFloat(value)) ? 0 : parseFloat(value)) : value || '',
+    }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting updated product:", product);
-    console.log("Product ID:", id); // Debugging log to verify `id`
-
-    if (id) {
-      console.error("Invalid product ID. Cannot update product.");
-      setError("Invalid product ID. Please try again.");
-      return;
-    }
-
+    console.info('Submitting updated product:', product); // Info log for submission
     try {
-      await axios.put(`${API_URL}/${id}`, product); // Update product using axios
-      console.log("Product updated successfully");
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 3000);
+      const updatedProduct = {
+        title: product.title,
+        price: product.price,
+        description: product.description,
+        image: product.image,
+        category: product.category,
+      };
+      const { data } = await axios.put(`https://fakestoreapi.com/products/${id}`, updatedProduct);
+      console.info('Product updated successfully:', data); // Success log
+      setMessage('Product updated successfully!');
+      setTimeout(() => navigate('/products'), 2000); // Redirect after 2 seconds
     } catch (err) {
-      console.error("Error updating product:", err);
-      setError("Failed to update product. Please try again.");
+      console.error('Error updating product:', err.message); // Error log
+      setError('Failed to update product. Please try again.');
     }
   };
 
+  // Handle product deletion
   const handleDelete = async () => {
-    console.log(`Attempting to delete product with ID: ${id}`);
-    setShowDeleteModal(false); // Close the modal
-    console.log("Delete modal closed");
-
-    if (!id) {
-        console.error("Invalid product ID. Cannot update product.");
-        setError("Invalid product ID. Please try again.");
-        return;
-      }
-
+    console.warn('Attempting to delete product with ID:', id); // Warn log for deletion
     try {
-      await axios.delete(`${API_URL}/${id}`); // Delete product using axios
-      console.log("Product deleted successfully, redirecting to product listing...");
-      navigate("/products");
+      const { data } = await axios.delete(`https://fakestoreapi.com/products/${id}`);
+      console.info('Product deleted successfully:', data); // Success log
+      setMessage('Product deleted successfully!');
+      setTimeout(() => navigate('/products'), 2000); // Redirect after 2 seconds
     } catch (err) {
-      console.error("Error deleting product:", err);
-      setError("Failed to delete product. Please try again.");
+      console.error('Error deleting product:', err.message); // Error log
+      setError('Failed to delete product. Please try again.');
     }
   };
-
-  if (loading) {
-    console.log("Loading spinner displayed");
-    return <Spinner animation="border" variant="danger" />;
-  }
-
-  if (error) {
-    console.log("Error alert displayed:", error);
-    return <Alert variant="danger">{error}</Alert>;
-  }
 
   return (
-    <div className="container mt-5">
-      <Card className="bg-dark text-light border-danger shadow p-4">
-        <h2 className="text-danger mb-4">Edit Product</h2>
-        {success && <Alert variant="success">Product updated successfully!</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={product.title || ""}
-              onChange={handleChange}
-              className="bg-dark text-light border-danger"
-              required
-            />
-          </Form.Group>
+    <Container className="mt-5">
+      <h2 className="text-danger">Edit Product</h2>
+      {message && <Alert variant="success">{message}</Alert>}
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Form onSubmit={handleSubmit}>
+        {/* Product ID Field */}
+        <Form.Group controlId="formId" className="mb-3">
+          <Form.Label>Product ID</Form.Label>
+          <Form.Control
+            type="text"
+            name="id"
+            value={product.id || ''}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
-              type="number"
-              name="price"
-              value={product.price || ""}
-              onChange={handleChange}
-              className="bg-dark text-light border-danger"
-              required
-            />
-          </Form.Group>
+        {/* Title Field */}
+        <Form.Group controlId="formTitle" className="mb-3">
+          <Form.Label>Title</Form.Label>
+          <Form.Control
+            type="text"
+            name="title"
+            value={product.title || ''}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Category</Form.Label>
-            <Form.Control
-              type="text"
-              name="category"
-              value={product.category || ""}
-              onChange={handleChange}
-              className="bg-dark text-light border-danger"
-              required
-            />
-          </Form.Group>
+        {/* Price Field */}
+        <Form.Group controlId="formPrice" className="mb-3">
+          <Form.Label>Price</Form.Label>
+          <Form.Control
+            type="number"
+            name="price"
+            value={product.price || 0}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Image</Form.Label>
-            <Form.Control
-              type="text"
-              name="image"
-              value={product.image || ""}
-              onChange={handleChange}
-              className="bg-dark text-light border-danger"
-              required
-            />
-          </Form.Group>
+        {/* Description Field */}
+        <Form.Group controlId="formDescription" className="mb-3">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            name="description"
+            value={product.description || ''}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="description"
-              value={product.description || ""}
-              onChange={handleChange}
-              className="bg-dark text-light border-danger"
-              required
-            />
-          </Form.Group>
+        {/* Image URL Field */}
+        <Form.Group controlId="formImage" className="mb-3">
+          <Form.Label>Image URL</Form.Label>
+          <Form.Control
+            type="text"
+            name="image"
+            value={product.image || ''}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-          <Button variant="danger" type="submit" className="w-100 mb-3">
-            Update Product
-          </Button>
-        </Form>
+        {/* Category Field */}
+        <Form.Group controlId="formCategory" className="mb-3">
+          <Form.Label>Category</Form.Label>
+          <Form.Control
+            type="text"
+            name="category"
+            value={product.category || ''}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-        <Button
-          variant="outline-danger"
-          className="w-100"
-          onClick={() => {
-            console.log("Delete button clicked, showing confirmation modal");
-            setShowDeleteModal(true);
-          }}
-        >
+        {/* Action Buttons */}
+        <Button variant="danger" type="submit" className="mt-3">
+          Update Product
+        </Button>
+        <Button variant="danger" onClick={handleDelete} className="mt-3 ms-3">
           Delete Product
         </Button>
-      </Card>
-
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this product?</Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              console.log("Cancel button clicked, hiding confirmation modal");
-              setShowDeleteModal(false);
-            }}
-          >
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDelete}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+      </Form>
+    </Container>
   );
 };
 
