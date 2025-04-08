@@ -49,7 +49,7 @@ const ProductList = () => {
                 variant="top"
                 src={product.image}
                 alt={`Image of ${product.title}`}
-                className="img-fluid border border-danger rounded"
+                className="product-img img-fluid border border-danger rounded"
               />
               <Card.Body>
                 <Card.Title className="text-danger">{product.title}</Card.Title>
