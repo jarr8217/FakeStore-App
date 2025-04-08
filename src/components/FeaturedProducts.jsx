@@ -40,7 +40,7 @@ const FeaturedProducts = () => {
               variant="top"
               src={product.image}
               alt={product.title}
-              className="border border-danger rounded"
+              className="banner-img border border-danger rounded"
             />
             <Card.Body>
               <Card.Title className="text-danger">{product.title}</Card.Title>
