@@ -5,4 +5,16 @@ body {
     background-color: var(--primary-bg) !important;
     color: var(--primary-text) !important;
   }
+
+.banner-img {
+    object-fit: cover;
+    height: 350px !important;
+    width: 100%;
+  }
+
+.product-img {
+    object-fit: contain;
+    height: 300px !important;
+    width: 100%;
+  }
   
