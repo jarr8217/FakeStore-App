@@ -17,7 +17,7 @@ const Home = () => {
         <img
           src={bannerImage}
           alt="FakeStore Banner"
-          className="img-fluid rounded shadow-sm my-4 border border-danger"
+          className="banner-img img-fluid rounded shadow-sm my-4 border border-danger"
         />
         <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
           <Link to="/products" className="btn btn-danger btn-lg">
